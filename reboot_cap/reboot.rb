@@ -14,8 +14,6 @@ module VagrantPlugins
           @logger.info("Issuing reboot command for guest")
           comm.sudo("shutdown -r now")
 
-          machine.ui.info(I18n.t("vagrant.guests.capabilities.rebooting"))
-
           @logger.info("Waiting for machine to finish rebooting")
 
           wait_remaining = MAX_REBOOT_RETRY_DURATION
@@ -23,7 +21,7 @@ module VagrantPlugins
             wait_for_reboot(machine)
           rescue Vagrant::Errors::MachineGuestNotReady => e
             raise if wait_remaining < 0
-            @logger.warn("Machine not ready, cannot start reboot yet. Trying again")
+            @logger.info("Machine not ready, cannot start reboot yet. Trying again")
             sleep(5)
             wait_remaining -= 5
             retry
